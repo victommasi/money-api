@@ -1,5 +1,7 @@
 package com.money.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,12 @@ public class Person {
 
     public Boolean getActive() {
         return active;
+    }
+
+    @JsonIgnore
+    @Transient
+    public Boolean isInactive(){
+        return !this.active;
     }
 
     public void setActive(Boolean active) {
