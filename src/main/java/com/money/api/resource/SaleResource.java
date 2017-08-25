@@ -6,11 +6,14 @@ import com.money.api.exception.ApiExceptionHandler;
 import com.money.api.exception.PersonNullOrInactiveException;
 import com.money.api.model.Sale;
 import com.money.api.repository.SaleRepository;
+import com.money.api.repository.filter.SaleFilter;
 import com.money.api.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +40,8 @@ public class SaleResource {
     private MessageSource messageSource;
 
     @GetMapping
-    public List<Sale> listAll(){
-        return saleRepository.findAll();
+    public Page<Sale> listAll(SaleFilter saleFilter, Pageable pageable){
+        return saleRepository.filter(saleFilter, pageable);
     }
 
     @GetMapping("/{id}")
@@ -52,6 +55,12 @@ public class SaleResource {
         Sale savedSale = saleService.save(sale);
         publisher.publishEvent(new CreatedResourceEvent(this, response, savedSale.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(sale);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remove(@PathVariable Long id){
+        saleService.remove(id);
     }
 
     @ExceptionHandler({PersonNullOrInactiveException.class})
