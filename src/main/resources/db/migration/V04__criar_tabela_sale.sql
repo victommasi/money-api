@@ -6,10 +6,8 @@ CREATE TABLE sale (
 	price DECIMAL(10,2) NOT NULL,
 	obs VARCHAR(100),
 	type VARCHAR(20) NOT NULL,
-	id_category BIGINT(20) NOT NULL,
-	id_person BIGINT(20) NOT NULL,
-	CONSTRAINT fk_sale_category FOREIGN KEY (id_category) REFERENCES category(id),
-	CONSTRAINT fk_sale_person FOREIGN KEY (id_person) REFERENCES person(id)
+	id_category BIGINT(20) NOT NULL REFERENCES category(id),
+	id_person BIGINT(20) NOT NULL REFERENCES person(id)
 );
 
 INSERT INTO sale (description, due_date, pay_date, price, obs, type, id_category, id_person) values ('Salário mensal', '2017-06-10', null, 6500.00, 'Distribuição de lucros', 'INCOME', 1, 1);
