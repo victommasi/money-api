@@ -6,9 +6,9 @@ CREATE TABLE user (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE role (
-	id BIGINT(20) PRIMARY KEY,
+	id BIGSERIAL PRIMARY KEY,
 	description VARCHAR(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE user_role (
 	id_user BIGINT(20) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE user_role (
 	PRIMARY KEY (id_user, id_role),
 	FOREIGN KEY (id_user) REFERENCES user(id),
 	FOREIGN KEY (id_role) REFERENCES role(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 INSERT INTO user (id, name, email, password) values (1, 'Administrador', 'admin@algamoney.com', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.');
 INSERT INTO user (id, name, email, password) values (2, 'Maria Silva', 'maria@algamoney.com', '$2a$10$Zc3w6HyuPOPXamaMhh.PQOXvDnEsadztbfi6/RyZWJDzimE8WQjaq');

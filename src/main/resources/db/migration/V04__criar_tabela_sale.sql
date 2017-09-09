@@ -1,8 +1,8 @@
 CREATE TABLE sale (
-	id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+	id BIGSERIAL PRIMARY KEY NOT NULL,
 	description VARCHAR(50) NOT NULL,
-	due_date DATE NOT NULL,
-	pay_date DATE,
+	due_date DATETIME NOT NULL,
+	pay_date DATETIME,
 	price DECIMAL(10,2) NOT NULL,
 	obs VARCHAR(100),
 	type VARCHAR(20) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE sale (
 	id_person BIGINT(20) NOT NULL,
 	FOREIGN KEY (id_category) REFERENCES category(id),
 	FOREIGN KEY (id_person) REFERENCES person(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 INSERT INTO sale (description, due_date, pay_date, price, obs, type, id_category, id_person) values ('Salário mensal', '2017-06-10', null, 6500.00, 'Distribuição de lucros', 'INCOME', 1, 1);
 INSERT INTO sale (description, due_date, pay_date, price, obs, type, id_category, id_person) values ('Bahamas', '2017-02-10', '2017-02-10', 100.32, null, 'DEBIT', 2, 2);
