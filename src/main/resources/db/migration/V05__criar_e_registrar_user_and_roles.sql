@@ -1,5 +1,5 @@
 CREATE TABLE user (
-	id BIGINT(20) PRIMARY KEY,
+	id BIGSERIAL PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
 	password VARCHAR(150) NOT NULL
@@ -11,8 +11,8 @@ CREATE TABLE role (
 );
 
 CREATE TABLE user_role (
-	id_user BIGINT(20) NOT NULL,
-	id_role BIGINT(20) NOT NULL,
+	id_user BIGINT NOT NULL,
+	id_role BIGINT NOT NULL,
 	PRIMARY KEY (id_user, id_role),
 	CONSTRAINT fk_user_role_user FOREIGN KEY (id_user) REFERENCES user(id),
 	CONSTRAINT fk_user_role_role FOREIGN KEY (id_role) REFERENCES role(id)
