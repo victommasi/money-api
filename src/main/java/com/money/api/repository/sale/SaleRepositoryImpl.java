@@ -2,6 +2,7 @@ package com.money.api.repository.sale;
 
 import com.money.api.model.Sale;
 import com.money.api.repository.filter.SaleFilter;
+import com.money.api.repository.projection.SaleVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,28 @@ public class SaleRepositoryImpl implements SaleRepositoryQuery {
         return new PageImpl(query.getResultList(), pageable, total(saleFilter));
     }
 
+    @Override
+    public Page<SaleVO> digest(SaleFilter saleFilter, Pageable pageable) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<SaleVO> criteria = builder.createQuery(SaleVO.class);
+        Root<Sale> root = criteria.from(Sale.class);
+
+        criteria.select(builder.construct(SaleVO.class
+                , root.get("id"), root.get("description")
+                , root.get("dueDate"), root.get("payDate")
+                , root.get("price"), root.get("type")
+                , root.get("category").get("name")
+                , root.get("person").get("name")));
+
+        Predicate[] predicates = createFilterRestrictions(saleFilter, builder, root);
+        criteria.where(predicates);
+
+        TypedQuery<SaleVO> query = manager.createQuery(criteria);
+        createPagingRestrictions(query, pageable);
+
+        return new PageImpl<>(query.getResultList(), pageable, total(saleFilter));
+    }
+
     private Long total(SaleFilter saleFilter) {
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
@@ -50,7 +73,7 @@ public class SaleRepositoryImpl implements SaleRepositoryQuery {
         return manager.createQuery(criteriaQuery).getSingleResult();
     }
 
-    private void createPagingRestrictions(TypedQuery<Sale> query, Pageable pageable) {
+    private void createPagingRestrictions(TypedQuery<?> query, Pageable pageable) {
         int currentPage = pageable.getPageNumber();
         int totalPerPage = pageable.getPageSize();
         int first = currentPage * totalPerPage;

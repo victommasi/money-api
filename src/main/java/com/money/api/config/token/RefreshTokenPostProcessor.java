@@ -1,5 +1,7 @@
 package com.money.api.config.token;
 
+import com.money.api.config.properties.ApiProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -23,6 +25,9 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
     private static final String POST_ACCESS_TOKEN = "postAccessToken";
     private static final String TOKEN_URI = "/oauth/token";
     private static final String REFRESHTOKEN = "refreshToken";
+
+    @Autowired
+    private ApiProperties apiProperties;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
@@ -48,7 +53,7 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
     private void addRefreshTokenIntoCookie(String refreshToken, HttpServletRequest request, HttpServletResponse response) {
         Cookie refreshTokenCookie = new Cookie(REFRESHTOKEN, refreshToken);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(false); // TODO: Change to true when in production
+        refreshTokenCookie.setSecure(apiProperties.getSecurity().isEnableHttps());
         refreshTokenCookie.setPath(request.getContextPath() + TOKEN_URI);
         refreshTokenCookie.setMaxAge(2592000);
         response.addCookie(refreshTokenCookie);

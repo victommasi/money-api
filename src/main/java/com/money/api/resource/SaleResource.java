@@ -7,6 +7,7 @@ import com.money.api.exception.PersonNullOrInactiveException;
 import com.money.api.model.Sale;
 import com.money.api.repository.SaleRepository;
 import com.money.api.repository.filter.SaleFilter;
+import com.money.api.repository.projection.SaleVO;
 import com.money.api.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -44,6 +45,12 @@ public class SaleResource {
     @PreAuthorize("hasAnyAuthority('ROLE_FIND_SALE') and #oauth2.hasScope('read')")
     public Page<Sale> listAll(SaleFilter saleFilter, Pageable pageable){
         return saleRepository.filter(saleFilter, pageable);
+    }
+
+    @GetMapping(params = "digest")
+    @PreAuthorize("hasAnyAuthority('ROLE_FIND_SALE') and #oauth2.hasScope('read')")
+    public Page<SaleVO> listAlld(SaleFilter saleFilter, Pageable pageable){
+        return saleRepository.digest(saleFilter, pageable);
     }
 
     @GetMapping("/{id}")
