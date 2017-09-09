@@ -47,6 +47,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- postgres -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- Migracoes - Flyway -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
