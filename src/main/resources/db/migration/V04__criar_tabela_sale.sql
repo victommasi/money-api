@@ -1,8 +1,8 @@
 CREATE TABLE sale (
 	id BIGSERIAL PRIMARY KEY NOT NULL,
 	description VARCHAR(50) NOT NULL,
-	due_date DATETIME NOT NULL,
-	pay_date DATETIME,
+	due_date DATE NOT NULL,
+	pay_date DATE,
 	price DECIMAL(10,2) NOT NULL,
 	obs VARCHAR(100),
 	type VARCHAR(20) NOT NULL,
