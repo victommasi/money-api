@@ -14,8 +14,8 @@ CREATE TABLE user_role (
 	id_user BIGINT(20) NOT NULL,
 	id_role BIGINT(20) NOT NULL,
 	PRIMARY KEY (id_user, id_role),
-	FOREIGN KEY (id_user) REFERENCES user(id),
-	FOREIGN KEY (id_role) REFERENCES role(id)
+	CONSTRAINT fk_user_role_user FOREIGN KEY (id_user) REFERENCES user(id),
+	CONSTRAINT fk_user_role_role FOREIGN KEY (id_role) REFERENCES role(id)
 );
 
 INSERT INTO user (id, name, email, password) values (1, 'Administrador', 'admin@algamoney.com', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.');
