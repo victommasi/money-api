@@ -18,8 +18,8 @@ CREATE TABLE user_role (
 	CONSTRAINT fk_user_role_role FOREIGN KEY (id_role) REFERENCES role(id)
 );
 
-INSERT INTO users (id, name, email, password) values (1, 'Administrador', 'admin@money.com', '');
-INSERT INTO users (id, name, email, password) values (2, 'Maria Silva', 'maria@money.com', '');
+INSERT INTO users (id, name, email, password) values (1, 'Administrador', 'admin@money.com', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.');
+INSERT INTO users (id, name, email, password) values (2, 'Maria Silva', 'maria@money.com', '$2a$10$Zc3w6HyuPOPXamaMhh.PQOXvDnEsadztbfi6/RyZWJDzimE8WQjaq');
 
 INSERT INTO role (id, description) values (1, 'ROLE_SAVE_CATEGORY');
 INSERT INTO role (id, description) values (2, 'ROLE_FIND_CATEGORY');
