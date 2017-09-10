@@ -5,6 +5,7 @@ import com.money.api.model.Person;
 import com.money.api.model.Sale;
 import com.money.api.repository.PersonRepository;
 import com.money.api.repository.SaleRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,7 @@ public class SaleService {
     private PersonRepository personRepository;
 
     public Sale save(Sale sale) {
-        Person person = personRepository.findOne(sale.getPerson().getId());
-        if (person == null || person.isInactive()){
-            throw new PersonNullOrInactiveException();
-        }
+        validatePerson(sale);
         return saleRepository.save(sale);
     }
 
@@ -32,5 +30,30 @@ public class SaleService {
             throw new EmptyResultDataAccessException(1);
         }
         saleRepository.delete(savedSale);
+    }
+
+    public Sale update(Long id, Sale sale) {
+        Sale savedSale = saleRepository.findOne(id);
+
+        if (savedSale == null)
+            throw new IllegalArgumentException();
+
+        if (!sale.getPerson().equals(savedSale.getPerson())) {
+            validatePerson(sale);
+        }
+
+        BeanUtils.copyProperties(sale, savedSale, "id");
+        return saleRepository.save(savedSale);
+    }
+
+    private void validatePerson(Sale sale) {
+        Person person = null;
+        if (sale.getPerson().getId() != null) {
+            person = personRepository.findOne(sale.getPerson().getId());
+        }
+
+        if (person == null || person.isInactive()){
+            throw new PersonNullOrInactiveException();
+        }
     }
 }

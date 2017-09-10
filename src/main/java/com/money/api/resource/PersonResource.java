@@ -6,6 +6,8 @@ import com.money.api.repository.PersonRepository;
 import com.money.api.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,8 +32,8 @@ public class PersonResource {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ROLE_FIND_PERSON') and #oauth2.hasScope('read')")
-    public List<Person> listAll() {
-        return personRepository.findAll();
+    public Page<Person> listAll(@RequestParam(required = false, defaultValue = "%") String name, Pageable pageable) {
+        return personRepository.findByNameContaining(name, pageable);
     }
 
     @GetMapping("/{id}")

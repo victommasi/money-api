@@ -68,6 +68,17 @@ public class SaleResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(sale);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Sale> update(@PathVariable Long id, @Valid @RequestBody Sale sale, HttpServletResponse response) {
+        try {
+            Sale savedSale = saleService.update(id, sale);
+            return ResponseEntity.ok(savedSale);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_SAVE_SALE') and #oauth2.hasScope('write')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
